@@ -57,7 +57,7 @@ class MemeController extends Controller
     }
 
     public function index(){
-        $memes = Meme::where('type','Animated')->limit(1)->get();
+        $memes = Meme::get();
 
         return response($memes,200);
     }
