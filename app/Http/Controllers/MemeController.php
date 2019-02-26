@@ -52,12 +52,23 @@ class MemeController extends Controller
         }
 
         return 'success '.$code.'  ,   '.$title.'<br/>';
-
-
     }
 
-    public function index(){
-        $memes = Meme::get();
+    public function index(Request $request){
+        $limit = 12;
+        $offset = 0;
+        $memes = Meme::limit(12);
+        if($request->has("offset")){
+            $memes = $memes->offset($request->input("offset"));
+        }
+        if($request->has("type")){
+            $memes = $memes->where("type",$request->input("type"));
+        }
+        if($request->has("post_section")){
+            $memes = $memes->where("post_section",$request->input("post_section"));
+        }
+
+        $memes = $memes->get();
 
         return response($memes,200);
     }
