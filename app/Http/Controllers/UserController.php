@@ -16,9 +16,15 @@ class UserController extends Controller
         if($request->has("name")){
             $user->name = $request->name;
         }
-        if($request->has("name")){
-            $user->name = $request->name;
+        if($request->has("photo_url")){
+            $user->photo_url = $request->photo_url;
         }
-        $user->save();
+        if(!$user->save()){
+            $user = User::where('email',$request->email)->first();
+        }
+        $data = ['result' => 1,
+            'data' => $user
+        ];
+        return response()->json($data,200);
     }
 }

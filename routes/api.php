@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('index','MemeController@index');
 Route::post('commentinsert','CommentController@store');
+Route::post('syncusers','UserController@storeForApi');
