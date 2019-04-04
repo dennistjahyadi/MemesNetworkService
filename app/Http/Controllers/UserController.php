@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
     //
-
     public function storeForApi(Request $request){
         $user = new User();
-        $user->email_verified_at = \Carbon::now();
+        $user->email_verified_at = Carbon::now();
         $user->email = $request->email;
         if($request->has("name")){
             $user->name = $request->name;
@@ -19,9 +19,38 @@ class UserController extends Controller
         if($request->has("photo_url")){
             $user->photo_url = $request->photo_url;
         }
-        if(!$user->save()){
-            $user = User::where('email',$request->email)->first();
+
+        $result = User::where('email',$request->email)->first();
+
+        if($result==null){
+            $user->save();
+        }else{
+            $user = $result;
         }
+
+        $data = ['result' => 1,
+            'data' => $user
+        ];
+        return response()->json($data,200);
+    }
+
+    public function insertUsername(Request $request){
+
+        $user = User::where('username',$request->username)->first();
+
+        if($user==null) {
+            if(strlen($request->username) <= 4 ){
+
+                return response()->json("Username at least 5 character long.",401);
+            }
+            $user = User::where('email', $request->email)->first();
+            $user->username = $request->username;
+            $user->save();
+        }else {
+
+            return response()->json("Username has been used.",401);
+        }
+
         $data = ['result' => 1,
             'data' => $user
         ];
