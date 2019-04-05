@@ -31,12 +31,13 @@ how much data you want to scrap?
         if(nextCursor!=""){
             theUrl = url+"?"+nextCursor;
         }
+
         $.ajax({
             method: "GET",
             url: theUrl,
-
         })
             .done(function (result) {
+                console.log(result);
                 var posts = result['data']['posts'];
                 nextCursor = result['data']['nextCursor'];
                 for(var i=0;i<posts.length;i++){

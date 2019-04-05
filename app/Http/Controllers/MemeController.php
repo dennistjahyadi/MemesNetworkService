@@ -24,16 +24,16 @@ class MemeController extends Controller
         if(count($memes)>0){
             return 0;
         }
-        foreach ($images as $key => $value){
-            $imageUrl = $images[$key]["url"];
-            // downloading images
-            $url = $imageUrl;
-            $contents = file_get_contents($url);
-            $name = substr($url, strrpos($url, '/') + 1);
-            Storage::disk('public_sources')->put($name, $contents);
-            // ------------
-            $images[$key]["url"] = $name;
-        }
+//        foreach ($images as $key => $value){
+//            $imageUrl = $images[$key]["url"];
+//            // downloading images
+//            $url = $imageUrl;
+//            $contents = file_get_contents($url);
+//            $name = substr($url, strrpos($url, '/') + 1);
+//            Storage::disk('public_sources')->put($name, $contents);
+//            // ------------
+//            $images[$key]["url"] = $name;
+//        }
 
         $meme = new Meme();
         $meme->code = $code;
