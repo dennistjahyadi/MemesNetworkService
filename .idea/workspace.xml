@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="72f9c4a3-ef5d-4e3f-9d3c-7723af973064" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MemeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MemeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/scrap.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/scrap.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_02_01_164858_create_sections_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_02_01_164858_create_sections_table.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -30,7 +29,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MemeController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MemeController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MemeController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-136">
@@ -38,6 +37,15 @@
               <folding>
                 <element signature="e#40#53#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="2019_02_01_164858_create_sections_table.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/database/migrations/2019_02_01_164858_create_sections_table.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="18" column="47" lean-forward="true" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -85,15 +93,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="374">
               <caret line="22" column="59" selection-start-line="22" selection-start-column="59" selection-end-line="22" selection-end-column="59" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="2019_02_01_164936_create_memes_table.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/database/migrations/2019_02_01_164936_create_memes_table.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -161,6 +160,7 @@
         <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/resources/views/scrap.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/MemeController.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2019_02_01_164858_create_sections_table.php" />
       </list>
     </option>
   </component>
@@ -409,12 +409,12 @@
       <workItem from="1554045851654" duration="615000" />
       <workItem from="1554296195950" duration="3376000" />
       <workItem from="1554379838288" duration="5457000" />
-      <workItem from="1554472365057" duration="2415000" />
+      <workItem from="1554472365057" duration="3181000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61766000" />
+    <option name="totallyTimeSpent" value="62532000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -660,13 +660,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2019_02_01_164858_create_sections_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="45" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Providers/AppServiceProvider.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -818,6 +811,13 @@
           <folding>
             <element signature="e#40#53#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2019_02_01_164858_create_sections_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="18" column="47" lean-forward="true" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
         </state>
       </provider>
     </entry>
