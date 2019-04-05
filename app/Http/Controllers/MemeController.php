@@ -56,12 +56,15 @@ class MemeController extends Controller
 
 
     public function index(Request $request){
-        $limit = 1200;
+        $limit = 20;
         $offset = 0;
-        $memes = Meme::limit($limit);
+
         if($request->has("offset")){
-            $memes = $memes->offset($request->input("offset"));
+            $offset = $request->offset;
         }
+
+        $memes = Meme::limit($limit)->offset($offset);
+
         if($request->has("type")){
             $memes = $memes->where("type",$request->input("type"));
         }
