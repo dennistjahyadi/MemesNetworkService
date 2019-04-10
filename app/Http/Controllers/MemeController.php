@@ -6,11 +6,11 @@ use App\Meme;
 use App\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class MemeController extends Controller
 {
     //
-
     public function insert(Request $request){
         $post = json_decode($request->input("post"),true);
         $code = $post["id"];
@@ -54,7 +54,6 @@ class MemeController extends Controller
         return 'success '.$code.'  ,   '.$title.'<br/>';
     }
 
-
     public function index(Request $request){
         $limit = 20;
         $offset = 0;
@@ -63,7 +62,15 @@ class MemeController extends Controller
             $offset = $request->offset;
         }
 
-        $memes = Meme::limit($limit)->offset($offset);
+        $memes = Meme::select("memes.*",
+            DB::raw("(SELECT count(likes.meme_id) FROM likes
+                                WHERE likes.meme_id = memes.id and likes.like = 1) as total_like"),
+            DB::raw("(SELECT count(likes.meme_id) FROM likes
+                                WHERE likes.meme_id = memes.id and likes.like = 0) as total_dislike"),
+            DB::raw("(SELECT count(comments.meme_id) FROM comments
+                                WHERE comments.meme_id = memes.id) as total_comment"));
+
+        $memes = $memes->limit($limit)->offset($offset);
 
         if($request->has("type")){
             $memes = $memes->where("type",$request->input("type"));
@@ -71,7 +78,6 @@ class MemeController extends Controller
         if($request->has("post_section")){
             $memes = $memes->where("post_section",$request->input("post_section"));
         }
-        
 
         $memes = $memes->get();
 
