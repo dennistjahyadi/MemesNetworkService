@@ -22,4 +22,6 @@ Route::post('commentinsert','CommentController@store');
 Route::post('syncusers','UserController@storeForApi');
 Route::post('insertusername','UserController@insertUsername');
 Route::get('sections','SectionController@index');
+Route::post('insertlike','LikeController@insert');
+
 

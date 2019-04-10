@@ -18,7 +18,8 @@ class CreateLikesTable extends Migration
             $table->foreign('meme_id')->references('id')->on('memes')->onDelete('cascade');;
             $table->integer("user_id")->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
-            $table->boolean("likes")->nullable();
+            $table->boolean("like")->nullable();
+            $table->timestamps();
         });
     }
 
