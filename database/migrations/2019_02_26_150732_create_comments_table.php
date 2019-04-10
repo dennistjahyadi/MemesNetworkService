@@ -16,12 +16,12 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger("meme_id");
-            $table->foreign("meme_id")->references('id')->on('memes');
+            $table->foreign("meme_id")->references('id')->on('memes')->onDelete('cascade');;
             $table->unsignedInteger("user_id");
-            $table->foreign("user_id")->references('id')->on('users');
+            $table->foreign("user_id")->references('id')->on('users')->onDelete('cascade');;
             $table->text("messages");
             $table->unsignedInteger("comment_id")->nullable();
-            $table->foreign("comment_id")->references('id')->on('comments');
+            $table->foreign("comment_id")->references('id')->on('comments')->onDelete('cascade');;
             $table->timestamps();
         });
     }
