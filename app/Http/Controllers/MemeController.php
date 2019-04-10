@@ -71,6 +71,7 @@ class MemeController extends Controller
         if($request->has("post_section")){
             $memes = $memes->where("post_section",$request->input("post_section"));
         }
+        
 
         $memes = $memes->get();
 
