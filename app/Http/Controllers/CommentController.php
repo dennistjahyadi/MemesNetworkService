@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     //
-    public function insert(Request $request){
+    public function store(Request $request){
 
         $comment = new Comment();
         $comment->meme_id = $request->input("meme_id");
@@ -31,12 +31,23 @@ class CommentController extends Controller
         return response()->json($data,401);
     }
 
-    public function fetch(Request $request){
+    public function index(Request $request){
 
-        $comments = Comment::orderBy("id","desc");
+        $limit = 10;
+        $offset = 0;
+
+        if($request->has("offset")){
+            $offset = $request->offset;
+        }
+        
+        $comments = Comment::select(['comments.*','users.username as created_by'])
+                             ->join('users','comments.user_id','=','users.id')
+                             ->orderBy("id","desc");
+        $comments = $comments->limit($limit)->offset($offset);
+        
         if($request->has("comment_id")){
             $comments = $comments->where("comment_id", $request->input("comment_id"));
-            $comments = $comments->orderBy("id","asc");
+            $comments = $comments->orderBy("id","desc");
         }
         if($request->has("meme_id")){
             $comments = $comments->where("meme_id", $request->input("meme_id"));
@@ -44,7 +55,8 @@ class CommentController extends Controller
         $comments = $comments->get();
 
         $data = ['result' => 1,
-            'data' => $comments
+            'data' => $comments,
+            'current_time' => gettimeofday()
         ];
         return response()->json($data,200);
     }

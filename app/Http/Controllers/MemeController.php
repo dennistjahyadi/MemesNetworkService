@@ -68,7 +68,9 @@ class MemeController extends Controller
             DB::raw("(SELECT count(likes.meme_id) FROM likes
                                 WHERE likes.meme_id = memes.id and likes.like = 0) as total_dislike"),
             DB::raw("(SELECT count(comments.meme_id) FROM comments
-                                WHERE comments.meme_id = memes.id) as total_comment"));
+                                WHERE comments.meme_id = memes.id) as total_comment"),
+            DB::raw("(select likes.like from likes 
+                                WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"));
 
         $memes = $memes->limit($limit)->offset($offset);
 
