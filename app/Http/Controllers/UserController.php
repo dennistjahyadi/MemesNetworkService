@@ -43,6 +43,10 @@ class UserController extends Controller
 
                 return response()->json("Username at least 5 character long.",401);
             }
+            if(!preg_match('/^\w{5,}$/', $request->username)) { // \w equals "[0-9A-Za-z_]"
+                // valid username, alphanumeric & longer than or equals 5 chars
+                return response()->json("Username cannot include special characters or space.",401);
+            }
             $user = User::where('email', $request->email)->first();
             $user->username = $request->username;
             $user->save();
