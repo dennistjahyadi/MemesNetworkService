@@ -52,6 +52,12 @@ class CommentController extends Controller
         if($request->has("meme_id")){
             $comments = $comments->where("meme_id", $request->input("meme_id"));
         }
+        if($request->has("user_id")){
+            $comments = $comments->where("user_id", $request->input("user_id"));
+        }
+        
+        
+        
         $comments = $comments->get();
 
         $data = ['result' => 1,

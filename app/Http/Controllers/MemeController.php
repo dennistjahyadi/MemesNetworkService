@@ -57,10 +57,15 @@ class MemeController extends Controller
     public function index(Request $request){
         $limit = 20;
         $offset = 0;
+        $userId = 0;
 
         if($request->has("offset")){
             $offset = $request->offset;
         }
+        if($request->has("user_id")){
+            $userId = $request->user_id;
+        }
+        
 
         $memes = Meme::select("memes.*",
             DB::raw("(SELECT count(likes.meme_id) FROM likes
@@ -70,7 +75,7 @@ class MemeController extends Controller
             DB::raw("(SELECT count(comments.meme_id) FROM comments
                                 WHERE comments.meme_id = memes.id) as total_comment"),
             DB::raw("(select likes.like from likes 
-                                WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"));
+                                WHERE likes.meme_id = memes.id and likes.user_id = ".$userId.") as is_liked"));
 
         $memes = $memes->limit($limit)->offset($offset);
 
