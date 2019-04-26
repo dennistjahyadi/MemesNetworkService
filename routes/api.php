@@ -22,6 +22,7 @@ Route::get('indexliked','MemeController@indexLikedByUser');
 Route::get('indexdisliked','MemeController@indexDislikedByUser');
 Route::post('sendcomment','CommentController@store');
 Route::get('comments','CommentController@index');
+Route::get('commentsuserhistory','CommentController@indexByUserId');
 Route::post('syncusers','UserController@storeForApi');
 Route::post('insertusername','UserController@insertUsername');
 Route::post('editprofile','UserController@editProfile');

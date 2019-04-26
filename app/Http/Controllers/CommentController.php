@@ -39,12 +39,12 @@ class CommentController extends Controller
         if($request->has("offset")){
             $offset = $request->offset;
         }
-        
+
         $comments = Comment::select(['comments.*','users.username as created_by'])
                              ->join('users','comments.user_id','=','users.id')
                              ->orderBy("id","desc");
         $comments = $comments->limit($limit)->offset($offset);
-        
+
         if($request->has("comment_id")){
             $comments = $comments->where("comment_id", $request->input("comment_id"));
             $comments = $comments->orderBy("id","desc");
@@ -55,9 +55,35 @@ class CommentController extends Controller
         if($request->has("user_id")){
             $comments = $comments->where("user_id", $request->input("user_id"));
         }
-        
-        
-        
+
+        $comments = $comments->get();
+
+        $data = ['result' => 1,
+            'data' => $comments,
+            'current_time' => gettimeofday()
+        ];
+        return response()->json($data,200);
+    }
+
+    public function indexByUserId(Request $request){
+
+        $limit = 10;
+        $offset = 0;
+
+        if($request->has("offset")){
+            $offset = $request->offset;
+        }
+
+        $comments = Comment::select(['comments.*','users.username as created_by','memes.code','memes.title','memes.type','memes.images','memes.tags','memes.post_section'])
+            ->join('users','comments.user_id','=','users.id')
+            ->join('memes','comments.meme_id','=','memes.id')
+            ->orderBy("id","desc");
+        $comments = $comments->limit($limit)->offset($offset);
+
+        if($request->has("user_id")){
+            $comments = $comments->where("user_id", $request->input("user_id"));
+        }
+
         $comments = $comments->get();
 
         $data = ['result' => 1,
