@@ -62,7 +62,7 @@ class UserController extends Controller
     }
 
     public function editProfile(Request $request){
-        $user = User::where('username',$request->username)->whereNot('email',$request->email)->first();
+        $user = User::where('username',$request->username)->where('email','!=',$request->email)->first();
 
         if($user==null) {
             if(strlen($request->username) <= 4 ){

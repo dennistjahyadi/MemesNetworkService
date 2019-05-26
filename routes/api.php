@@ -16,6 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('test', function(){
+	return 'test success';
+});
 
 Route::get('index','MemeController@index');
 Route::get('indexliked','MemeController@indexLikedByUser');
