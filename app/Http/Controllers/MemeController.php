@@ -86,7 +86,7 @@ class MemeController extends Controller
             $memes = $memes->where("memes.post_section",$request->input("post_section"));
         }
 		
-		$memes = $memes->orderBy("memes.id","desc")
+		$memes = $memes->orderBy("memes.id","desc");
 
         $memes = $memes->get();
 
