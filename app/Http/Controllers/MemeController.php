@@ -89,6 +89,9 @@ class MemeController extends Controller
 		$memes = $memes->orderBy("memes.id","desc");
 
         $memes = $memes->get();
+		
+		shuffle($memes);
+
 
         return response($memes,200);
     }
