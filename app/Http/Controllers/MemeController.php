@@ -90,10 +90,12 @@ class MemeController extends Controller
 
         $memes = $memes->get();
 		
-		shuffle($memes);
+		$shuffled = $memes->shuffle();
+
+		$shuffled->all();
 
 
-        return response($memes,200);
+        return response($shuffled->all(),200);
     }
 
 
