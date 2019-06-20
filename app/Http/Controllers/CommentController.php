@@ -59,8 +59,7 @@ class CommentController extends Controller
         $comments = $comments->get();
 
         $data = ['result' => 1,
-            'data' => $comments,
-            'current_time' => gettimeofday()
+            'data' => ['comments'=> $comments, 'current_time' => gettimeofday()],
         ];
         return response()->json($data,200);
     }
