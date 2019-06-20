@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -58,8 +59,10 @@ class CommentController extends Controller
 
         $comments = $comments->get();
 
+
         $data = ['result' => 1,
-            'data' => ['comments'=> $comments, 'current_time' => gettimeofday()],
+            'data' => $comments,
+            'current_timestamp' => Carbon::now()->timestamp
         ];
         return response()->json($data,200);
     }
@@ -87,7 +90,7 @@ class CommentController extends Controller
 
         $data = ['result' => 1,
             'data' => $comments,
-            'current_time' => gettimeofday()
+            'current_timestamp' => Carbon::now()->timestamp
         ];
         return response()->json($data,200);
     }
