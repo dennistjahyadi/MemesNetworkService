@@ -62,7 +62,7 @@ class CommentController extends Controller
 
         $data = ['result' => 1,
             'data' => $comments,
-            'current_timestamp' => Carbon::now()->timestamp
+            'current_datetime' => Carbon::now()->toDateTimeString()
         ];
         return response()->json($data,200);
     }
@@ -90,7 +90,7 @@ class CommentController extends Controller
 
         $data = ['result' => 1,
             'data' => $comments,
-            'current_timestamp' => Carbon::now()->timestamp
+            'current_datetime' => Carbon::now()->toDateTimeString()
         ];
         return response()->json($data,200);
     }
