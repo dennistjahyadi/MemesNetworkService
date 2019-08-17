@@ -189,7 +189,6 @@
 			return response($shuffled->all(),200);
 		}
 
-
 		public function indexLikedByUser(Request $request){
 			$limit = 20;
 			$offset = 0;
@@ -206,7 +205,10 @@
             DB::raw("(SELECT count(comments.meme_id) FROM comments
 			WHERE comments.meme_id = memes.id) as total_comment"),
             DB::raw("(select likes.like from likes 
-			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"));
+			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"),
+			DB::raw("(select likes.created_at from likes 
+			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as likes_at")
+			);
 
 			$memes = $memes->limit($limit)->offset($offset);
 
@@ -219,6 +221,8 @@
 			$memes = $memes->join('likes','memes.id','=','likes.meme_id')
 			->where('likes.user_id',$request->user_id)
 			->where('likes.like',1);
+			
+			$memes = $memes->orderBy("likes_at","desc");
 
 
 			$memes = $memes->get();
@@ -242,7 +246,10 @@
             DB::raw("(SELECT count(comments.meme_id) FROM comments
 			WHERE comments.meme_id = memes.id) as total_comment"),
             DB::raw("(select likes.like from likes 
-			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"));
+			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"),
+			DB::raw("(select likes.created_at from likes 
+			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as likes_at")
+			);
 
 			$memes = $memes->limit($limit)->offset($offset);
 
@@ -255,6 +262,8 @@
 			$memes = $memes->join('likes','memes.id','=','likes.meme_id')
             ->where('likes.user_id',$request->user_id)
             ->where('likes.like',0);
+            
+			$memes = $memes->orderBy("likes_at","desc");
 
 
 			$memes = $memes->get();
