@@ -4,6 +4,7 @@
 
 	use App\Meme;
 	use App\Section;
+	use App\Like;
 	use Illuminate\Http\Request;
 	use Illuminate\Support\Facades\Storage;
 	use Illuminate\Support\Facades\DB;
@@ -107,7 +108,7 @@
 			$theUrl = $url;
 
 
-			for($a=0;$a<=10;$a++){
+			for($a=0;$a<=5;$a++){
 				if($nextCursor!=""){
 					$theUrl = $url."?".$nextCursor;
 				}
@@ -118,7 +119,7 @@
 				$posts = json_decode($posts,true);
 				$nextCursor = $result->data->nextCursor;
 
-				if($a==4){
+				if($a>=4){
 					for($i=0;$i<count($posts);$i++){
 						$post = $posts[$i];
 						$this->insert2($post);
@@ -149,7 +150,7 @@
 				$now =  Carbon::now();
 
 				$totalDuration = $now->diffInMinutes($createdAt);
-				if($totalDuration>10){
+				if($totalDuration>30){
 					$this->fetch();
 				}
 				else{
@@ -182,10 +183,21 @@
 			$memes = $memes->get();
 
 			$shuffled = $memes->shuffle();
+			
+			for($i = 0; $i<rand(4,10);$i++){
+        		$like = new Like();
+        		$like->meme_id = ($memes[0]->id - rand(0,25));
+        		$like->user_id = 0;
+        		if(rand(1, 100)>10){
+        	    	$like->like = 1;
+        		}else{
+        			$like->like = 0;
+        		}
+        		$like->save();
 
-			$shuffled->all();
+			}
 
-
+         
 			return response($shuffled->all(),200);
 		}
 
@@ -206,7 +218,10 @@
             DB::raw("(SELECT count(comments.meme_id) FROM comments
 			WHERE comments.meme_id = memes.id) as total_comment"),
             DB::raw("(select likes.like from likes 
-			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"));
+			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"),
+			DB::raw("(select likes.created_at from likes 
+			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as likes_at")
+			);
 
 			$memes = $memes->limit($limit)->offset($offset);
 
@@ -219,6 +234,8 @@
 			$memes = $memes->join('likes','memes.id','=','likes.meme_id')
 			->where('likes.user_id',$request->user_id)
 			->where('likes.like',1);
+			
+			$memes = $memes->orderBy("likes_at","desc");
 
 
 			$memes = $memes->get();
@@ -242,7 +259,10 @@
             DB::raw("(SELECT count(comments.meme_id) FROM comments
 			WHERE comments.meme_id = memes.id) as total_comment"),
             DB::raw("(select likes.like from likes 
-			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"));
+			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as is_liked"),
+			DB::raw("(select likes.created_at from likes 
+			WHERE likes.meme_id = memes.id and likes.user_id = ".$request->user_id.") as likes_at")
+			);
 
 			$memes = $memes->limit($limit)->offset($offset);
 
@@ -255,6 +275,8 @@
 			$memes = $memes->join('likes','memes.id','=','likes.meme_id')
             ->where('likes.user_id',$request->user_id)
             ->where('likes.like',0);
+            
+			$memes = $memes->orderBy("likes_at","desc");
 
 
 			$memes = $memes->get();
