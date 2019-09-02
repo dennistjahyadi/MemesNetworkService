@@ -201,7 +201,6 @@
 			return response($shuffled->all(),200);
 		}
 
-
 		public function indexLikedByUser(Request $request){
 			$limit = 20;
 			$offset = 0;
