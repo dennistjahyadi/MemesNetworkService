@@ -23,6 +23,7 @@ Route::get('test', function(){
 Route::get('index','MemeController@index');
 Route::get('indexliked','MemeController@indexLikedByUser');
 Route::get('indexdisliked','MemeController@indexDislikedByUser');
+Route::get('find','MemeController@find');
 Route::post('sendcomment','CommentController@store');
 Route::get('comments','CommentController@index');
 Route::get('commentsuserhistory','CommentController@indexByUserId');

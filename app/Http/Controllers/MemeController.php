@@ -100,36 +100,37 @@
 
 		function fetch()
 		{
-			$url = "https://9gag.com/v1/group-posts/group/default/type/hot";
-			$nextCursor = "";
-			$totalWanted = 10;
-			$totalScrapped = 0;
-
-			$theUrl = $url;
-
-
-			for($a=0;$a<=5;$a++){
-				if($nextCursor!=""){
-					$theUrl = $url."?".$nextCursor;
-				}
-				$client = new \GuzzleHttp\Client();
-				$response = $client->request('GET', $theUrl);
-				$result = json_decode($response->getBody()); // convert string to json object
-				$posts = json_encode($result->data->posts);
-				$posts = json_decode($posts,true);
-				$nextCursor = $result->data->nextCursor;
-
-				if($a>=4){
-					for($i=0;$i<count($posts);$i++){
-						$post = $posts[$i];
-						$this->insert2($post);
-					}
-				}
-
-			}
-
-
-
+		    try{
+	        	$url = "https://9gag.com/v1/group-posts/group/default/type/hot";
+    			$nextCursor = "";
+    			$totalWanted = 10;
+    			$totalScrapped = 0;
+    
+    			$theUrl = $url;
+    
+    
+    			for($a=0;$a<=5;$a++){
+    				if($nextCursor!=""){
+    					$theUrl = $url."?".$nextCursor;
+    				}
+    				$client = new \GuzzleHttp\Client();
+    				$response = $client->request('GET', $theUrl);
+    				$result = json_decode($response->getBody()); // convert string to json object
+    				$posts = json_encode($result->data->posts);
+    				$posts = json_decode($posts,true);
+    				$nextCursor = $result->data->nextCursor;
+    
+    				if($a>=4){
+    					for($i=0;$i<count($posts);$i++){
+    						$post = $posts[$i];
+    						$this->insert2($post);
+    					}
+    				}
+    
+    			}
+		    }catch(\Exception $ex){
+		        
+		    }
 		}
 
 		public function index(Request $request){
@@ -178,24 +179,29 @@
 				$memes = $memes->where("memes.post_section",$request->input("post_section"));
 			}
 
-			$memes = $memes->orderBy("memes.id","desc");
-
+			//$memes = $memes->orderBy("memes.id","desc");
+            $memes = $memes->inRandomOrder();    
 			$memes = $memes->get();
 
 			$shuffled = $memes->shuffle();
 			
-			for($i = 0; $i<rand(4,10);$i++){
-        		$like = new Like();
-        		$like->meme_id = ($memes[0]->id - rand(0,25));
-        		$like->user_id = 0;
-        		if(rand(1, 100)>10){
-        	    	$like->like = 1;
-        		}else{
-        			$like->like = 0;
-        		}
-        		$like->save();
-
-			}
+// 			for($i = 0; $i<rand(1,5);$i++){
+// 			    $randUserId = rand(5000000,10000000);
+// 			    $selectedMemeId = $memes[0]->id - rand(0,15);
+// 			    $count = Like::where('meme_id',$selectedMemeId)->where('user_id',$randUserId)->count();
+			    
+// 			    if($count==0){
+//             		$like = new Like();
+//             		$like->meme_id = $selectedMemeId;
+//             		$like->user_id = $randUserId;
+//             		if(rand(1, 100)>10){
+//             	    	$like->like = 1;
+//             		}else{
+//             			$like->like = 0;
+//             		}
+//             		$like->save();
+//                 }
+// 			}
 
          
 			return response($shuffled->all(),200);
@@ -282,4 +288,32 @@
 
 			return response($memes,200);
 		}
+		
+		public function find(Request $request){
+		    $userId = 0;
+		    if($request->has("user_id")){
+				$userId = $request->user_id;
+			}
+            $memes = Meme::select("memes.*",
+            DB::raw("(SELECT count(likes.meme_id) FROM likes
+			WHERE likes.meme_id = memes.id and likes.like = 1) as total_like"),
+            DB::raw("(SELECT count(likes.meme_id) FROM likes
+			WHERE likes.meme_id = memes.id and likes.like = 0) as total_dislike"),
+            DB::raw("(SELECT count(comments.meme_id) FROM comments
+			WHERE comments.meme_id = memes.id) as total_comment"),
+            DB::raw("(select likes.like from likes 
+			WHERE likes.meme_id = memes.id and likes.user_id = ".$userId.") as is_liked"));
+
+
+			if($request->has("meme_id")){
+				$memes = $memes->where("memes.id",$request->input("meme_id"));
+			}
+			
+			$memes = $memes->first();
+    
+            $data = ['result' => 1,
+                'data' => $memes
+            ];
+            return response()->json($data,200);
+        }
 	}
